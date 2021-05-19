@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
+﻿using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
-using System;
+using NUnit.Framework;
+
 
 namespace sel_webdriver_training
 {
@@ -17,6 +16,7 @@ namespace sel_webdriver_training
         public void Start()
         {
             driver = new ChromeDriver();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace sel_webdriver_training
         [TearDown]
         public void Stop()
         {
-            driver.Quit();
+            driver.Quit(); //close browser window
             driver = null;
         }
     }
