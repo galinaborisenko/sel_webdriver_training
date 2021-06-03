@@ -58,5 +58,11 @@ namespace litecart
             return driver.FindElements(by).Count > 0;
         }
 
+        public void WaitUntilElementVisible(By locator, int timeoutInSeconds)
+        {
+            new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds))
+                            .Until(drv => IsElementPresent(locator));
+        }
+        
     }
 }

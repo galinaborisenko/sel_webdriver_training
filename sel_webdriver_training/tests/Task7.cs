@@ -22,27 +22,30 @@ namespace litecart
             driver.FindElement(By.Id("box-login")).FindElement(By.Name("login")).Click();
 
             //IList<IWebElement> menuItems = driver.FindElements(By.CssSelector(".list-vertical a"));
-            int numberOfMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li")).Count();
-          //          
-            for (int i = 0; i < numberOfMenuItems-1; i++)
+            int numberOfMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li")).Count();         
+            for (int i = 0; i < numberOfMenuItems; i++)
             {
                 IList<IWebElement> menuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li"));
                 menuItems[i].Click();
-                string menuTitle = driver.FindElement(By.TagName("h1")).Text;
-                Console.WriteLine(i + " " + menuTitle);
+                Assert.IsTrue(IsElementPresent(By.TagName("h1")));
+               // WaitUntilElementVisible(By.TagName("h1"), 20);
+               // string menuTitle = driver.FindElement(By.TagName("h1")).Text;
+               // Console.WriteLine(i + " " + menuTitle);
                 
 
-                if (AreElementsPresent(By.CssSelector("#box-apps-menu>li li")))
+                if (IsElementPresent(By.CssSelector("#box-apps-menu>li li")))
                 {
                     int numberOfSubMenuIems = driver.FindElements(By.CssSelector("#box-apps-menu>li li")).Count();
-                    for (int j = 0; j < numberOfSubMenuIems-1; j++)
+                    for (int j = 0; j < numberOfSubMenuIems; j++)
                     {
                         IList<IWebElement> subMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li li"));
                         subMenuItems[j].Click();
-                        string subMenuTitle = driver.FindElement(By.TagName("h1")).Text;
-                        Console.WriteLine(i + "." + j + " " +subMenuTitle);
+                        Assert.IsTrue(IsElementPresent(By.TagName("h1")));
+                        //    string subMenuTitle = driver.FindElement(By.TagName("h1")).Text;
+                        //    Console.WriteLine(i + "." + j + " " +subMenuTitle);
                     }
-                }                
+                }
+                continue;
             }
         }
     }
