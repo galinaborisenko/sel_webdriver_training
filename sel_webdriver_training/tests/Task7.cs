@@ -21,31 +21,28 @@ namespace litecart
             driver.FindElement(By.Id("box-login")).FindElement(By.Name("password")).SendKeys("admin");
             driver.FindElement(By.Id("box-login")).FindElement(By.Name("login")).Click();
 
-            //IList<IWebElement> menuItems = driver.FindElements(By.CssSelector(".list-vertical a"));
-            int numberOfMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li")).Count();         
+            IList<IWebElement> menuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li"));
+            int numberOfMenuItems = menuItems.Count();      
+            
             for (int i = 0; i < numberOfMenuItems; i++)
             {
-                IList<IWebElement> menuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li"));
+                menuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li"));
                 menuItems[i].Click();
-                Assert.IsTrue(IsElementPresent(By.TagName("h1")));
-               // WaitUntilElementVisible(By.TagName("h1"), 20);
-               // string menuTitle = driver.FindElement(By.TagName("h1")).Text;
-               // Console.WriteLine(i + " " + menuTitle);
-                
+                string menuTitle = driver.FindElement(By.TagName("h1")).Text;
+                Console.WriteLine(i + " " + menuTitle);
 
-                if (IsElementPresent(By.CssSelector("#box-apps-menu>li li")))
+                IList<IWebElement> subMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li li"));
+                int numberOfSubMenuIems = subMenuItems.Count;
+                if (numberOfSubMenuIems > 0)
                 {
-                    int numberOfSubMenuIems = driver.FindElements(By.CssSelector("#box-apps-menu>li li")).Count();
                     for (int j = 0; j < numberOfSubMenuIems; j++)
                     {
-                        IList<IWebElement> subMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li li"));
+                        subMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li li"));
                         subMenuItems[j].Click();
-                        Assert.IsTrue(IsElementPresent(By.TagName("h1")));
-                        //    string subMenuTitle = driver.FindElement(By.TagName("h1")).Text;
-                        //    Console.WriteLine(i + "." + j + " " +subMenuTitle);
+                        string subMenuTitle = driver.FindElement(By.TagName("h1")).Text;
+                        Console.WriteLine(i + "." + j + " " +subMenuTitle);
                     }
                 }
-                continue;
             }
         }
     }
