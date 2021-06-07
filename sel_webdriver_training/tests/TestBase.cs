@@ -21,7 +21,7 @@ namespace litecart
             {
                 return;
             }*/
-            driver = new ChromeDriver();
+            //driver = new ChromeDriver();
 
 
             // Set Chrome options for Advanced Browser Configurations
@@ -33,11 +33,11 @@ namespace litecart
             //driver = new ChromeDriver(options);
 
             //Init new scheme FF
-            //driver = new FirefoxDriver(); 
+            driver = new FirefoxDriver(); 
             //Init MsEdge
             //driver = new EdgeDriver();
 
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30); //неявное ожидание, когда не можем найти локатор сразу
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //неявное ожидание, когда не можем найти локатор сразу
         }
 
         [TearDown]

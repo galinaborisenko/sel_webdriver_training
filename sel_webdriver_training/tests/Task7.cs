@@ -20,7 +20,7 @@ namespace litecart
             driver.FindElement(By.Id("box-login")).FindElement(By.Name("username")).SendKeys("admin");
             driver.FindElement(By.Id("box-login")).FindElement(By.Name("password")).SendKeys("admin");
             driver.FindElement(By.Id("box-login")).FindElement(By.Name("login")).Click();
-
+ 
             IList<IWebElement> menuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li"));
             int numberOfMenuItems = menuItems.Count();      
             
@@ -28,8 +28,9 @@ namespace litecart
             {
                 menuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li"));
                 menuItems[i].Click();
-                string menuTitle = driver.FindElement(By.TagName("h1")).Text;
-                Console.WriteLine(i + " " + menuTitle);
+                //string menuTitle = driver.FindElement(By.TagName("h1")).Text;
+                //Console.WriteLine(i + " " + menuTitle);
+                Assert.IsTrue(AreElementsPresent(By.TagName("h1")));
 
                 IList<IWebElement> subMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li li"));
                 int numberOfSubMenuIems = subMenuItems.Count;
@@ -39,8 +40,9 @@ namespace litecart
                     {
                         subMenuItems = driver.FindElements(By.CssSelector("#box-apps-menu>li li"));
                         subMenuItems[j].Click();
-                        string subMenuTitle = driver.FindElement(By.TagName("h1")).Text;
-                        Console.WriteLine(i + "." + j + " " +subMenuTitle);
+                        //string subMenuTitle = driver.FindElement(By.TagName("h1")).Text;
+                        //Console.WriteLine(i + "." + j + " " +subMenuTitle);
+                        Assert.IsTrue(AreElementsPresent(By.TagName("h1")));
                     }
                 }
             }
