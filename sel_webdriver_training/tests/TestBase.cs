@@ -14,6 +14,11 @@ namespace litecart
         public static IWebDriver driver;
         public ChromeOptions options;
 
+        public LoginHelper loginHelper;
+        public NavigationHelper navigationHelper;
+        public CountryZoneHelper countryZoneHelper;
+
+
         [SetUp]
         public void StartBrowser()
         {
@@ -38,6 +43,9 @@ namespace litecart
             //driver = new EdgeDriver();
 
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //неявное ожидание, когда не можем найти локатор сразу
+            loginHelper = new LoginHelper(driver);
+            navigationHelper = new NavigationHelper(driver);
+            countryZoneHelper = new CountryZoneHelper(driver);
         }
 
         [TearDown]
@@ -47,6 +55,8 @@ namespace litecart
             driver = null;
         }
 
+
+        //Common methods
         public bool IsElementPresent(By by)
         {
             driver.FindElement(by);
