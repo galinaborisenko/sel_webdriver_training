@@ -68,6 +68,7 @@
     <Compile Include="tests\MyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tests\Task10.cs" />
+    <Compile Include="tests\Task11.cs" />
     <Compile Include="tests\Task7.cs" />
     <Compile Include="tests\Task8.cs" />
     <Compile Include="tests\Task9.cs" />
