@@ -42,7 +42,7 @@ namespace litecart
             //Init MsEdge
             //driver = new EdgeDriver();
 
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10); //неявное ожидание, когда не можем найти локатор сразу
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1); //неявное ожидание, когда не можем найти локатор сразу
             loginHelper = new LoginHelper(driver);
             navigationHelper = new NavigationHelper(driver);
             countryZoneHelper = new CountryZoneHelper(driver);

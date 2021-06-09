@@ -14,7 +14,7 @@ namespace litecart
     public class Task7 : TestBase
     {
         [Test]
-        public void Test1()
+        public void ClickOnEachAdminMenuAndCheckH1IsPresent()
         {
             driver.Url = "http://localhost/litecart/admin/login.php";
             driver.FindElement(By.Id("box-login")).FindElement(By.Name("username")).SendKeys("admin");
