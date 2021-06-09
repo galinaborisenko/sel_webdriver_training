@@ -16,7 +16,7 @@ namespace litecart
     public class Task11 : TestBase
     {
         [Test]
-        public void Test()
+        public void CustomerLoginLogout()
         {
             navigationHelper.GoToShopHomePage();
             driver.FindElement(By.CssSelector("#box-account-login a[href*=\"create_account\"]")).Click();
@@ -33,13 +33,8 @@ namespace litecart
             IWebElement drpCountry = driver.FindElement(By.Name("country_code"));
             IJavaScriptExecutor jse = (IJavaScriptExecutor)driver;
             jse.ExecuteScript("arguments[0].selectedIndex = 224; arguments[0].dispatchEvent(new Event('change'))", drpCountry);
-            //driver.FindElement(By.Name("zone_code")).Click();
-            //SelectElement drpZone= new SelectElement(driver.FindElement(By.Name("zone_code")));
-            // drpZone.SelectByValue("AL");
-            //IWebElement drpZone = driver.FindElement(By.Name("zone_code"));
-            //jse.ExecuteScript("arguments[0].selectedIndex = 6; arguments[0].dispatchEvent(new Event('change'))", drpZone);
             driver.FindElement(By.Name("email")).Click();
-            driver.FindElement(By.Name("email")).SendKeys("08062021hb@hb1.com");
+            driver.FindElement(By.Name("email")).SendKeys("hb@hb111.com");
             driver.FindElement(By.Name("phone")).Click();
             driver.FindElement(By.Name("phone")).SendKeys(Keys.Home + "+14842634723");
             driver.FindElement(By.Name("password")).Click();
@@ -51,7 +46,7 @@ namespace litecart
             driver.FindElement(By.CssSelector("a[href*=\"logout\"]")).Click();
            
             driver.FindElement(By.Name("email")).Click();
-            driver.FindElement(By.Name("email")).SendKeys("08062021hb@hb1.com");
+            driver.FindElement(By.Name("email")).SendKeys("hb@hb111.com");
             driver.FindElement(By.Name("password")).Click();
             driver.FindElement(By.Name("password")).SendKeys("1111");
             driver.FindElement(By.Name("login")).Click();
