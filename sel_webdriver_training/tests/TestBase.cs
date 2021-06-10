@@ -79,5 +79,22 @@ namespace litecart
             new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds))
                             .Until(drv => !IsElementPresent(searchElementBy));
         }
+        public void Type(By locator, string text)
+        {
+            if (text != null)
+            {
+                driver.FindElement(locator).Clear();
+                driver.FindElement(locator).SendKeys(text);
+            }
+        }
+
+        public void SetDatepicker(IWebDriver driver, string cssSelector, string date)
+        {
+            new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until<bool>(
+                d => driver.FindElement(By.CssSelector(cssSelector)).Displayed);
+            (driver as IJavaScriptExecutor).ExecuteScript(
+                String.Format("$('{0}').datepicker('setDate', '{1}')", cssSelector, date));
+        }
+
     }
 }
