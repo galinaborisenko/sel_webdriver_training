@@ -18,6 +18,7 @@ namespace litecart
         public NavigationHelper navigationHelper;
         public CountryZoneHelper countryZoneHelper;
 
+        public object Thread { get; private set; }
 
         [SetUp]
         public void StartBrowser()
@@ -42,7 +43,7 @@ namespace litecart
             //Init MsEdge
             //driver = new EdgeDriver();
 
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1); //неявное ожидание, когда не можем найти локатор сразу
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5); //неявное ожидание, когда не можем найти локатор сразу
             loginHelper = new LoginHelper(driver);
             navigationHelper = new NavigationHelper(driver);
             countryZoneHelper = new CountryZoneHelper(driver);
@@ -96,5 +97,12 @@ namespace litecart
                 String.Format("$('{0}').datepicker('setDate', '{1}')", cssSelector, date));
         }
 
+        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        //IWebElement element = wait.Until(ExpectedConditions.ElementExists(By.Name("q")));
+        //IWebElement element2 = wait.Until(d => d.FindElement(By.Name("q")));
+
+        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        //driver.Navigate().Refresh();
+        //wait.Until(ExpectedConditions.StalenessOf(element));
     }
 }

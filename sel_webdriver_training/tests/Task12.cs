@@ -11,15 +11,13 @@ using System.Linq;
 using System.Drawing;
 using System.Globalization;
 using System.Threading;
-using System.Reflection;
-using System.IO;
 
 namespace litecart
 {
     public class Task12 : TestBase
     {
         [Test]
-        public void Test()
+        public void AddNewProductInCatalogAdmin()
         {
             navigationHelper.GoToAdminHomePage();
             loginHelper.LoginAdmin();
@@ -54,8 +52,7 @@ namespace litecart
             Type(By.Name("quantity"), "100");
 
             //Image
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "tapok.jpg");
-            Type(By.Name("new_images[]"), filePath);
+            Type(By.Name("new_images[]"), "C:\\Users\\hborysenko\\Downloads\\tapok.jpg");
 
 
             //Set dates (today =  DateTime.Now.ToString("M/d/yyyy"))
@@ -84,12 +81,12 @@ namespace litecart
             Type(By.Name("prices[USD]"), "60.50");
             Type(By.Name("prices[EUR]"), "40.50");
 
-            //Thread.Sleep(500);
+            //Thread.Sleep(1000);
             IWebElement saveButton = driver.FindElement(By.Name("save"));
             IJavaScriptExecutor jseSaveButton = (IJavaScriptExecutor)driver;
             jseSaveButton.ExecuteScript("arguments[0].click();", saveButton);
 
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
             Assert.IsTrue(IsElementPresent(By.CssSelector(".notice.success")));
             string productName = driver.FindElement(By.CssSelector(".dataTable tr td a[href*=product]")).Text;
             Assert.AreEqual(name, productName);
