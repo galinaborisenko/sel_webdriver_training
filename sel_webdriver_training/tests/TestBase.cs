@@ -6,6 +6,8 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
 using NUnit.Framework;
 using OpenQA.Selenium.Remote;
+using System.Text;
+using System.Linq;
 
 namespace litecart
 {
@@ -97,17 +99,12 @@ namespace litecart
                 String.Format("$('{0}').datepicker('setDate', '{1}')", cssSelector, date));
         }
 
-        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        //IWebElement element = wait.Until(ExpectedConditions.ElementExists(By.Name("q")));
-        //IWebElement element2 = wait.Until(d => d.FindElement(By.Name("q")));
-
-        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        //driver.Navigate().Refresh();
-        //wait.Until(ExpectedConditions.StalenessOf(element));
-
-        //element visible
-        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        //wait.Until(ExpectedConditions.ElementIsVisible(element));
-
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "abcdefghjjklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
     }
 }
