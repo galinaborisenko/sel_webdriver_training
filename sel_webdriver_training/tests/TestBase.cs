@@ -64,7 +64,7 @@ namespace litecart
             return true;
         }
 
-        public bool AreElementsPresent(By by)
+        public bool AreElementsPresent(By by) //эта функция ждет указанное в implicit wait время пока не найдет хоть один элемент
         {
             return driver.FindElements(by).Count > 0;
         }
@@ -104,5 +104,10 @@ namespace litecart
         //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         //driver.Navigate().Refresh();
         //wait.Until(ExpectedConditions.StalenessOf(element));
+
+        //element visible
+        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        //wait.Until(ExpectedConditions.ElementIsVisible(element));
+
     }
 }

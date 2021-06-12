@@ -16,50 +16,46 @@ namespace litecart
     public class Task13 : TestBase
     {
         [Test]
-        public void Test()
+        public void AddAndRemoveFromCartDucks()
         {
-            //1) открыть главную страницу
-            navigationHelper.GoToShopHomePage();
-            //2) открыть первый товар из списка
-            driver.FindElement(By.ClassName("product")).Click();
-            //2) добавить его в корзину(при этом может случайно добавиться товар, который там уже есть, ничего страшного)
-            driver.FindElement(By.Name("add_cart_product")).Click();
-            //3) подождать, пока счётчик товаров в корзине обновится
+            int i = 0;
+            while (i < 3)
+            {             
+                //1) открыть главную страницу
+                //2) открыть первый товар из списка
+                //2) добавить его в корзину(при этом может случайно добавиться товар, который там уже есть, ничего страшного)
+                //3) подождать, пока счётчик товаров в корзине обновится
+                navigationHelper.GoToShopHomePage();
+                driver.FindElement(By.ClassName("product")).Click();
 
-            //4) вернуться на главную страницу, повторить предыдущие шаги ещё два раза, чтобы в общей сложности в корзине было 3 единицы товара
-            navigationHelper.GoToShopHomePage();
-            driver.FindElement(By.ClassName("product")).Click();
-            driver.FindElement(By.Name("add_cart_product")).Click();
-            //подождать, пока счётчик товаров в корзине обновится
-
-            navigationHelper.GoToShopHomePage();
-            driver.FindElement(By.ClassName("product")).Click();
-            driver.FindElement(By.Name("add_cart_product")).Click();
-            //подождать, пока счётчик товаров в корзине обновится
+                if (AreElementsPresent(By.Name("options[[untitled]]"))){}
+                else 
+                {
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+                    string  oldQtyString = driver.FindElement(By.CssSelector("#cart .content .quantity")).Text;
+                    int oldQtyInt = Int16.Parse(oldQtyString);
+                    int newQtyInt = oldQtyInt + 1;
+                    driver.FindElement(By.Name("add_cart_product")).Click();
+                    IWebElement newQty = driver.FindElement(By.CssSelector("#cart .content .quantity"));
+                    wait.Until(ExpectedConditions.TextToBePresentInElement(newQty, newQtyInt.ToString()));
+                    i++;
+                };               
+            }
 
             //5) открыть корзину (в правом верхнем углу кликнуть по ссылке Checkout)
-            driver.Url = "https://litecart.stqa.ru/ru/checkout";
-            //driver.FindElement(By.CssSelector("[href*=\"checkout\"]")).Click();
             //6) удалить все товары из корзины один за другим, после каждого удаления подождать, пока внизу обновится таблица
+            driver.FindElement(By.CssSelector("#cart .link")).Click();           
             driver.FindElement(By.CssSelector(".shortcuts li")).Click();
             IList<IWebElement> elements = driver.FindElements(By.CssSelector(".shortcuts li"));
             int numberOfElements = elements.Count();
-            //IWebElement table = driver.FindElement(By.Id("box-checkout-summary"));
+            IWebElement table = driver.FindElement(By.CssSelector(".dataTable tr>td"));
+            WebDriverWait wait1 = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             while (numberOfElements > 0)
             {
-                int i = 1;
-                i++;
-                elements = driver.FindElements(By.Name("remove_cart_item"));
-                elements[i].Click();
+                driver.FindElement(By.Name("remove_cart_item")).Click(); ;
+                numberOfElements--;
+                wait1.Until(ExpectedConditions.StalenessOf(table));
             }
-            ///for (int i = 0; i < numberOfElements; i++)
-           // {
-              //  elements = driver.FindElements(By.Name("remove_cart_item"));
-             //   elements[i].Click();
-              //  WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-              // driver.Navigate().Refresh();
-              //  wait.Until(ExpectedConditions.StalenessOf(table));
-           // }
         }
 
     }
