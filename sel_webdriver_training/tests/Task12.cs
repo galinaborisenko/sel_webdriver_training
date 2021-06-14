@@ -11,6 +11,7 @@ using System.Linq;
 using System.Drawing;
 using System.Globalization;
 using System.Threading;
+using System.IO;
 
 namespace litecart
 {
@@ -22,6 +23,7 @@ namespace litecart
             navigationHelper.GoToAdminHomePage();
             loginHelper.LoginAdmin();
             navigationHelper.GoToAdminCatalogPage();
+            int oldCount = driver.FindElements(By.CssSelector("tr input[name*=product]")).Count();
             driver.FindElement(By.CssSelector("a[href*=\"edit_product\"]")).Click();
             //Fill in General
             //Status
@@ -32,7 +34,8 @@ namespace litecart
                 statusEnabled.Click();
             }
             //Name
-            string name = "tapok";
+            string rnd = RandomString(10);
+            string name = $"{rnd}";
             Type(By.CssSelector("input[name*=\"name\"]"), name);
 
             //Code
@@ -52,10 +55,9 @@ namespace litecart
             Type(By.Name("quantity"), "100");
 
             //Image
-            Type(By.Name("new_images[]"), "C:\\Users\\hborysenko\\Downloads\\tapok.jpg");
+            string image = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tapok.jpg");
+            driver.FindElement(By.Name("new_images[]")).SendKeys(image);
 
-
-            //Set dates (today =  DateTime.Now.ToString("M/d/yyyy"))
             Type(By.Name("date_valid_from"), "2021-08-08");
             Type(By.Name("date_valid_to"), "2025-08-08");
 
@@ -81,15 +83,15 @@ namespace litecart
             Type(By.Name("prices[USD]"), "60.50");
             Type(By.Name("prices[EUR]"), "40.50");
 
-            //Thread.Sleep(1000);
             IWebElement saveButton = driver.FindElement(By.Name("save"));
             IJavaScriptExecutor jseSaveButton = (IJavaScriptExecutor)driver;
             jseSaveButton.ExecuteScript("arguments[0].click();", saveButton);
+            //string productName = driver.FindElement(By.CssSelector(".dataTable tr td a[href*=product]")).Text;
 
-            //Thread.Sleep(1000);
             Assert.IsTrue(IsElementPresent(By.CssSelector(".notice.success")));
-            string productName = driver.FindElement(By.CssSelector(".dataTable tr td a[href*=product]")).Text;
-            Assert.AreEqual(name, productName);
+            int newCount = driver.FindElements(By.CssSelector("tr input[name*=product]")).Count();
+            Assert.IsTrue(IsElementPresent(By.XPath("//a[contains(.,'{name}')]")));
+            Assert.AreEqual(oldCount + 1,newCount);          
         }
     }
 }

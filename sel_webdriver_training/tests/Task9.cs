@@ -33,32 +33,35 @@ namespace litecart
             loginHelper.LoginAdmin();
             navigationHelper.GoToAdminCountriesPage();
 
-            List<CountryData> unsortedCountryData = new List<CountryData>();
-            List<ZoneData> unsortedZoneData = new List<ZoneData>();
+            List<CountryData> unsortedCountryData = new List<CountryData>();          
             ICollection<IWebElement> countryItems = driver.FindElements(By.ClassName("row"));
             int numberOfCountries = countryItems.Count();
             for (int i = 0; i < numberOfCountries; i++)
             {
                 foreach (IWebElement countryItem in countryItems)
                 {
+                    countryItems = driver.FindElements(By.ClassName("row"));
                     IList<IWebElement> countryCells = countryItem.FindElements(By.TagName("td"));
                     string countryName = countryCells[4].GetAttribute("textContent");
                     string zones = countryCells[5].GetAttribute("textContent");
                     if (zones != "0")
-                    {
+                    {                       
                         countryCells[6].Click();
+                        List<ZoneData> unsortedZoneData = new List<ZoneData>();
                         ICollection<IWebElement> zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header)"));
                         int numberOfZones = zoneItems.Count();
-                        for (int j = 0; j < numberOfZones - 1; j++)
+                        for (int j = 0; j < (numberOfZones - 1); j++)
                         {
                             foreach (IWebElement zoneItem in zoneItems)
                             {
+                                zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header)"));
                                 IList<IWebElement> zoneCells = zoneItem.FindElements(By.TagName("td"));
-                                string zoneName = zoneCells[3].GetAttribute("textContent");
+                                string zoneName = zoneCells[3].Text;
                                 unsortedZoneData.Add(new ZoneData(zoneName));
-                                Console.WriteLine(string.Join(" ", unsortedZoneData));
+                                Console.WriteLine(string.Join(" ", unsortedZoneData));                             
                             }
-                        }                       
+                        }
+                        navigationHelper.GoToAdminCountriesPage();
                     }
                     unsortedCountryData.Add(new CountryData(countryName));
                     Console.WriteLine(string.Join(" ", unsortedCountryData));
