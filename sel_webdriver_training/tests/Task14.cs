@@ -21,16 +21,28 @@ namespace litecart
             navigationHelper.GoToAdminHomePage();
             loginHelper.LoginAdmin();
             navigationHelper.GoToAdminCountriesPage();
-            driver.FindElement(By.CssSelector(".button[href*=edit]"));
+            driver.FindElement(By.CssSelector(".button[href*=edit]")).Click();
             //запоминаем id текущего окна
             string mainWindow = driver.CurrentWindowHandle;
-            //запоминаем ids текущих окон
-            ICollection<string> oldWindows = driver.WindowHandles;
-            // открывает новое окно
-            IWebElement link = driver.FindElement(By.CssSelector(".fa.fa-external-link"));
-            link.Click();
 
-           
+            IList<IWebElement> links = driver.FindElements(By.CssSelector(".fa.fa-external-link"));
+            foreach (IWebElement link in links)
+            {
+               //запоминаем ids текущих окон
+               //ICollection<string> oldWindows = driver.WindowHandles;
+               int previousWinCount = driver.WindowHandles.Count;
+               // открывает новое окно
+               link.Click();
+               // ожидание появления нового окна
+               WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));              
+               wait.Until(driver => driver.WindowHandles.Count == (previousWinCount + 1));
+               driver.SwitchTo().Window(driver.WindowHandles.Last());
+               driver.Close();
+               driver.SwitchTo().Window(mainWindow);
+            }
+
+
+
 
 
         }
