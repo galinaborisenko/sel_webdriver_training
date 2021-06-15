@@ -25,7 +25,7 @@ namespace litecart
             foreach (IWebElement countryItem in countryItems)
             {
                 IList<IWebElement> cells = countryItem.FindElements(By.TagName("td"));
-                string name = cells[4].GetAttribute("innerText");
+                string name = cells[4].GetAttribute("href");
                 countryData.Add(new CountryData(name));
                 Console.WriteLine(name);
             }

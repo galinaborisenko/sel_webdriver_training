@@ -12,68 +12,59 @@ using System.Linq;
 namespace litecart
 {
     public class Task9 : TestBase
-    {
+    {  
         [Test]
-        public void AlphabeticalCountriesSort()
-        {
-            navigationHelper.GoToAdminHomePage();
-            loginHelper.LoginAdmin();
-            navigationHelper.GoToAdminCountriesPage();
-            List<CountryData> unsortedCountriesList = countryZoneHelper.GetCountryList();
-            List<CountryData> sortedCountriesList = countryZoneHelper.GetCountryList();
-            sortedCountriesList.Sort();
-            Console.WriteLine(string.Join(" ", unsortedCountriesList));
-            Assert.AreEqual(unsortedCountriesList, sortedCountriesList);
-        }
-
-        [Test]
-        public void GetCountryZoneList()
+        public void GetCountriesZonesLists()
         {
             navigationHelper.GoToAdminHomePage();
             loginHelper.LoginAdmin();
             navigationHelper.GoToAdminCountriesPage();
 
-            List<string> unsortedCountryNames = new List<string>();          
+            List<string> countryNames = new List<string>();
             ICollection<IWebElement> countryItems = driver.FindElements(By.ClassName("row"));
-            int numberOfCountries = countryItems.Count();
-            for (int i = 0; i < numberOfCountries; i++)
-            {
-                foreach (IWebElement countryItem in countryItems)
-                {
-                    countryItems = driver.FindElements(By.ClassName("row"));
-                    IList<IWebElement> countryCells = countryItem.FindElements(By.TagName("td"));
-                    string countryName = countryCells[4].GetAttribute("textContent");
-                    string zones = countryCells[5].GetAttribute("textContent");
-                    if (zones != "0")
-                    {
-                        countryCells[6].Click();
-                        List<string> unsortedZoneNames = new List<string>();
-                        ICollection<IWebElement> zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header)"));
-                        foreach (IWebElement zoneItem in zoneItems)
-                        {
-                            zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header)"));
-                            IList<IWebElement> zoneCells = zoneItem.FindElements(By.TagName("td"));
-                            if (zoneCells.Count > 1)
-                            {
-                                string zoneName = zoneCells[2].GetAttribute("textContent");
-                                unsortedZoneNames.Add(zoneName);
-                                Console.WriteLine(string.Join(" ", unsortedZoneNames));
-                            }
-                            List<string> sortedZoneNames = new List<string>();
-                            sortedZoneNames.Sort();
-                            Assert.AreEqual(unsortedZoneNames, sortedZoneNames);
-                        }
-                        navigationHelper.GoToAdminCountriesPage();
-                    }
-                    unsortedCountryNames.Add(countryName);
-                    Console.WriteLine(string.Join(" ", unsortedCountryNames));
-                    List<string> sortedCountryNames = new List<string>();
-                    sortedCountryNames.Sort();
-                 //   Assert.AreEqual(unsortedCountryNames, sortedCountryNames);
-                } 
+            //Console.WriteLine(countryItems.Count());
 
+            List<string> hrefs = new List<string>();
+
+            foreach (IWebElement countryItem in countryItems)
+            {
+                IList<IWebElement> countryCells = countryItem.FindElements(By.TagName("td"));
+                string countryName = countryCells[4].GetAttribute("textContent");
+                string zones = countryCells[5].GetAttribute("textContent");
+
+                if (zones != "0")
+                {
+                    string href = countryCells[6].FindElement(By.TagName("a")).GetAttribute("href");
+                    hrefs.Add(href);
+                }
+                countryNames.Add(countryName);
             }
-        }
+            //Console.WriteLine(string.Join(" ", countryNames));
+            //Console.WriteLine(string.Join(" ", hrefs));
+            List<string> sortedCountryNames = new List<string>(countryNames);
+            sortedCountryNames.Sort();
+            Assert.AreEqual(countryNames, sortedCountryNames);
+            int n =  hrefs.Count();
+            for (int i = 0; i < n; i++)
+            {
+                IWebElement link = driver.FindElement(By.CssSelector($"a[href*='{hrefs[i]}']"));
+                link.Click();
+                List<string> zoneNames = new List<string>();
+                ICollection<IWebElement> zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header):not(:last-child)"));
+                foreach (IWebElement zoneItem in zoneItems)
+                {
+                    zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header):not(:last-child)"));
+                    IList<IWebElement> zoneCells = zoneItem.FindElements(By.TagName("td"));
+                    string zoneName = zoneCells[2].GetAttribute("textContent");
+                    zoneNames.Add(zoneName);
+                    List<string> sortedZoneNames = new List<string>(zoneNames);
+                    sortedZoneNames.Sort();
+                    Assert.AreEqual(zoneNames, sortedZoneNames);
+                }
+                //Console.WriteLine(string.Join(" ", zoneNames));
+                navigationHelper.GoToAdminCountriesPage();
+            }
+         }    
     }
 }
 
