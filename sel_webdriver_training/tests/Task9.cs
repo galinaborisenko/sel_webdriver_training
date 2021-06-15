@@ -33,7 +33,7 @@ namespace litecart
             loginHelper.LoginAdmin();
             navigationHelper.GoToAdminCountriesPage();
 
-            List<CountryData> unsortedCountryData = new List<CountryData>();          
+            List<string> unsortedCountryNames = new List<string>();          
             ICollection<IWebElement> countryItems = driver.FindElements(By.ClassName("row"));
             int numberOfCountries = countryItems.Count();
             for (int i = 0; i < numberOfCountries; i++)
@@ -45,27 +45,33 @@ namespace litecart
                     string countryName = countryCells[4].GetAttribute("textContent");
                     string zones = countryCells[5].GetAttribute("textContent");
                     if (zones != "0")
-                    {                       
+                    {
                         countryCells[6].Click();
-                        List<ZoneData> unsortedZoneData = new List<ZoneData>();
+                        List<string> unsortedZoneNames = new List<string>();
                         ICollection<IWebElement> zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header)"));
-                        int numberOfZones = zoneItems.Count();
-                        for (int j = 0; j < (numberOfZones - 1); j++)
+                        foreach (IWebElement zoneItem in zoneItems)
                         {
-                            foreach (IWebElement zoneItem in zoneItems)
+                            zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header)"));
+                            IList<IWebElement> zoneCells = zoneItem.FindElements(By.TagName("td"));
+                            if (zoneCells.Count > 1)
                             {
-                                zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header)"));
-                                IList<IWebElement> zoneCells = zoneItem.FindElements(By.TagName("td"));
-                                string zoneName = zoneCells[3].Text;
-                                unsortedZoneData.Add(new ZoneData(zoneName));
-                                Console.WriteLine(string.Join(" ", unsortedZoneData));                             
+                                string zoneName = zoneCells[2].GetAttribute("textContent");
+                                unsortedZoneNames.Add(zoneName);
+                                Console.WriteLine(string.Join(" ", unsortedZoneNames));
                             }
+                            List<string> sortedZoneNames = new List<string>();
+                            sortedZoneNames.Sort();
+                            Assert.AreEqual(unsortedZoneNames, sortedZoneNames);
                         }
                         navigationHelper.GoToAdminCountriesPage();
                     }
-                    unsortedCountryData.Add(new CountryData(countryName));
-                    Console.WriteLine(string.Join(" ", unsortedCountryData));
-                }
+                    unsortedCountryNames.Add(countryName);
+                    Console.WriteLine(string.Join(" ", unsortedCountryNames));
+                    List<string> sortedCountryNames = new List<string>();
+                    sortedCountryNames.Sort();
+                 //   Assert.AreEqual(unsortedCountryNames, sortedCountryNames);
+                } 
+
             }
         }
     }

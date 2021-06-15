@@ -56,6 +56,7 @@ namespace litecart
 
             //Image
             string image = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tapok.jpg");
+            Console.WriteLine(image);
             driver.FindElement(By.Name("new_images[]")).SendKeys(image);
 
             Type(By.Name("date_valid_from"), "2021-08-08");
@@ -90,7 +91,7 @@ namespace litecart
 
             Assert.IsTrue(IsElementPresent(By.CssSelector(".notice.success")));
             int newCount = driver.FindElements(By.CssSelector("tr input[name*=product]")).Count();
-            Assert.IsTrue(IsElementPresent(By.XPath("//a[contains(.,'{name}')]")));
+            Assert.IsTrue(IsElementPresent(By.XPath($"//a[contains(.,'{name}')]")));
             Assert.AreEqual(oldCount + 1,newCount);          
         }
     }
