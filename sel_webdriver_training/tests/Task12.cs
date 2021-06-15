@@ -26,6 +26,7 @@ namespace litecart
             int oldCount = driver.FindElements(By.CssSelector("tr input[name*=product]")).Count();
             driver.FindElement(By.CssSelector("a[href*=\"edit_product\"]")).Click();
             //Fill in General
+
             //Status
             IWebElement statusEnabled = 
                 driver.FindElement(By.CssSelector("input[name=\"status\"][value=\"1\"]"));
