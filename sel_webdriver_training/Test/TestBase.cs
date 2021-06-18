@@ -19,12 +19,13 @@ namespace litecart
         public LoginHelper loginHelper;
         public NavigationHelper navigationHelper;
         public CountryZoneHelper countryZoneHelper;
+        public Application app;
 
-        public object Thread { get; private set; }
 
         [SetUp]
         public void StartBrowser()
         {
+            app = new Application();
             /*if (driver != null)
             {
                 return;
@@ -41,11 +42,11 @@ namespace litecart
             //driver = new ChromeDriver(options);
 
             //Init new scheme FF
-            driver = new FirefoxDriver(); 
+            //driver = new FirefoxDriver(); 
             //Init MsEdge
             //driver = new EdgeDriver();
 
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5); //неявное ожидание, когда не можем найти локатор сразу
+            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5); //неявное ожидание, когда не можем найти локатор сразу
             loginHelper = new LoginHelper(driver);
             navigationHelper = new NavigationHelper(driver);
             countryZoneHelper = new CountryZoneHelper(driver);
@@ -54,8 +55,8 @@ namespace litecart
         [TearDown]
         public void StopBrowser()
         {
-            driver.Quit(); //close browser window
-            driver = null;
+            app.Quit(); //close browser window
+            app = null;
         }
 
 
