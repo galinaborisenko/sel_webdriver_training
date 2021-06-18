@@ -64,7 +64,48 @@ namespace litecart
                 //Console.WriteLine(string.Join(" ", zoneNames));
                 navigationHelper.GoToAdminCountriesPage();
             }
-         }    
+         }
+
+        [Test]
+        public void GetZonesCountriesLists()
+        {
+            navigationHelper.GoToAdminHomePage();
+            loginHelper.LoginAdmin();
+            navigationHelper.GoToAdminZonesPage();
+
+            ICollection<IWebElement> countryItems = driver.FindElements(By.CssSelector(".dataTable tr:not(.header):not(:last-child)"));
+            //Console.WriteLine(countryItems.Count());
+
+            List<string> hrefs = new List<string>();
+
+            foreach (IWebElement countryItem in countryItems)
+            {
+                IList<IWebElement> countryCells = countryItem.FindElements(By.TagName("td"));
+                    string href = countryCells[4].FindElement(By.TagName("a")).GetAttribute("href");
+                    hrefs.Add(href);
+            }
+            //Console.WriteLine(string.Join(" ", hrefs));
+            int n = hrefs.Count();
+            for (int i = 0; i < n; i++)
+            {
+                IWebElement link = driver.FindElement(By.CssSelector($"a[href*='{hrefs[i]}']"));
+                link.Click();
+                ICollection<IWebElement> zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header):not(:last-child)"));
+                foreach (IWebElement zoneItem in zoneItems)
+                {
+                    List<string> zoneNames = new List<string>();
+                    zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header):not(:last-child)"));
+                    IList<IWebElement> zoneCells = zoneItem.FindElements(By.CssSelector("td"));
+                    string zoneName = zoneCells[2].FindElement(By.TagName("select")).GetAttribute("value");
+                    zoneNames.Add(zoneName);
+                    List<string> sortedZoneNames = new List<string>(zoneNames);
+                    sortedZoneNames.Sort();
+                    //Console.WriteLine(string.Join(" ", zoneNames));
+                    Assert.AreEqual(zoneNames, sortedZoneNames);
+                }
+                navigationHelper.GoToAdminZonesPage();
+            }
+        }
     }
 }
 

@@ -36,7 +36,10 @@ namespace litecart
         {
             driver.Url = "http://localhost/litecart/admin/?app=catalog&doc=catalog";
         }
-
+        public void GoToAdminZonesPage()
+        {
+            driver.Url = "http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones";
+        }
 
     }
 }
