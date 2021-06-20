@@ -41,10 +41,37 @@ namespace litecart
                driver.SwitchTo().Window(mainWindow);
             }
 
+        }
 
 
+        [Test]
+        public void AdminPanelOpenCountryTest()
+        {
+            driver.Url = "http://localhost/litecart/admin/?app=countries&doc=countries";
 
+            driver.FindElement(By.XPath("//a[contains(.,'Add New Country')]")).Click();
 
+            IList<IWebElement> links = driver.FindElements(By.CssSelector("td>a[target=_blank]"));
+
+            foreach (IWebElement link in links)
+            {
+                string originalWindow = driver.CurrentWindowHandle;
+                ICollection<string> oldWindows = driver.WindowHandles;
+
+                link.Click();
+
+                string newWindow = WaitForWindowOtherThan(oldWindows);
+
+                driver.SwitchTo().Window(newWindow);
+                driver.Close();
+
+                driver.SwitchTo().Window(originalWindow);
+            }
+        }
+
+        private string WaitForWindowOtherThan(ICollection<string> oldWindows)
+        {
+            throw new NotImplementedException();
         }
     }
 }

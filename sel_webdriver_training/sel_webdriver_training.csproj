@@ -79,6 +79,8 @@
     <Compile Include="tests\Task10.cs" />
     <Compile Include="tests\Task11.cs" />
     <Compile Include="tests\Task12.cs" />
+    <Compile Include="Test\Task171.cs" />
+    <Compile Include="Test\Task17.cs" />
     <Compile Include="Test\Task13.cs" />
     <Compile Include="tests\Task14.cs" />
     <Compile Include="tests\Task7.cs" />
