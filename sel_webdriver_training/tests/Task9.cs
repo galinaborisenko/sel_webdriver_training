@@ -73,6 +73,7 @@ namespace litecart
             loginHelper.LoginAdmin();
             navigationHelper.GoToAdminZonesPage();
 
+
             ICollection<IWebElement> countryItems = driver.FindElements(By.CssSelector(".dataTable tr:not(.header):not(:last-child)"));
             //Console.WriteLine(countryItems.Count());
 
