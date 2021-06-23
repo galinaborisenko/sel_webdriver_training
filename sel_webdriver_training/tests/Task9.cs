@@ -91,18 +91,19 @@ namespace litecart
                 IWebElement link = driver.FindElement(By.CssSelector($"a[href*='{hrefs[i]}']"));
                 link.Click();
                 ICollection<IWebElement> zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header):not(:last-child)"));
+                List<string> zoneNames = new List<string>();
                 foreach (IWebElement zoneItem in zoneItems)
                 {
-                    List<string> zoneNames = new List<string>();
                     zoneItems = driver.FindElements(By.CssSelector("#table-zones tr:not(.header):not(:last-child)"));
                     IList<IWebElement> zoneCells = zoneItem.FindElements(By.CssSelector("td"));
-                    string zoneName = zoneCells[2].FindElement(By.TagName("select")).GetAttribute("value");
+                    string zoneName = zoneCells[2].FindElement(By.CssSelector("select option[selected = \"selected\"]")).Text; //GetAttribute("value");
                     zoneNames.Add(zoneName);
-                    List<string> sortedZoneNames = new List<string>(zoneNames);
-                    sortedZoneNames.Sort();
-                    //Console.WriteLine(string.Join(" ", zoneNames));
-                    Assert.AreEqual(zoneNames, sortedZoneNames);
+                   
                 }
+                List<string> sortedZoneNames = new List<string>(zoneNames);
+                sortedZoneNames.Sort();
+                Console.WriteLine(string.Join(" ", zoneNames));
+                Assert.AreEqual(zoneNames, sortedZoneNames);
                 navigationHelper.GoToAdminZonesPage();
             }
         }
